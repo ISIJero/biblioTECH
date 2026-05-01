@@ -19,7 +19,25 @@
 }
 
 .tableContainer {
-  padding: 5rem;
+  border-collapse: separate;
+  border-spacing: 3rem;
   justify-content: center;
   align-items: center;
+
+  tr {
+    border-inline: solid black 1px;
+  }
+
+  td,
+  th {
+    padding: 1rem;
+    border-block: solid black 1px;
+  }
+
+  tbody tr {
+    &:focus,
+    &:hover {
+      background-color: aqua;
+    }
+  }
 }
