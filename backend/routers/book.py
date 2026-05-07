@@ -18,14 +18,14 @@ def read_book_by_id(id: int):
 
 @router.post("/", response_model=Book)
 def add_book(book: BookIn):
-    return services.insert_books(book)
+    return services.add_books(book)
 
 
 @router.put("/{id}", response_model=Book)
 def update_book(id: int, book: BookIn):
-    return services.update_book_by_id(id, book)
+    return services.update_book(id, book)
 
 
 @router.delete("/{id}")
 def delete_book(id: int):
-    return services.delete_book_by_id(id)
+    return services.delete_book(id)

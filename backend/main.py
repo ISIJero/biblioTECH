@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config.init_db import create_db
-from routers import book
+from routers import book, member
 
 app = FastAPI()
 
@@ -21,6 +21,7 @@ def startup_event():
 
 
 app.include_router(book.router, prefix="/books")
+app.include_router(member.router, prefix="/members")
 
 
 @app.get("/test")

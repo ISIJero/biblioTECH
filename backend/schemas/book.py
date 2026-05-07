@@ -8,7 +8,7 @@ class Book(BaseModel):
     materia: str
     isbn: str
     cod: int
-    estado: int
+    estado: str | int
 
 
 class BookIn(BaseModel):

@@ -15,6 +15,12 @@ def get_all_books() -> List[Book]:
         for row in rows:
             data.append(dict(row))
 
+    for datum in data:
+        if not datum["estado"]:
+            datum["estado"] = "Disponible"
+        else:
+            datum["estado"] = "Prestado"
+
     return data
 
 
@@ -27,10 +33,15 @@ def get_book_by_id(id: int) -> Book:
         for row in rows:
             data.append(dict(row))
 
+    if not data[0]["estado"]:
+        data[0]["estado"] = "Disponible"
+    else:
+        data[0]["estado"] = "Prestado"
+
     return data[0]
 
 
-def insert_books(book: BookIn) -> Book:
+def add_books(book: BookIn) -> Book:
     query = """
     INSERT INTO libros (nombre, autor, materia, isbn, cod, estado) 
     VALUES (:nombre, :autor, :materia, :isbn, :cod, :estado)
@@ -41,7 +52,7 @@ def insert_books(book: BookIn) -> Book:
     return {**book.model_dump(), "id": last_record_id.lastrowid}
 
 
-def update_book_by_id(id: int, book: BookIn) -> Book:
+def update_book(id: int, book: BookIn) -> Book:
     query = """
     UPDATE libros 
     SET nombre = :nombre, 
@@ -57,12 +68,17 @@ def update_book_by_id(id: int, book: BookIn) -> Book:
     return {**book.model_dump(), "id": id}
 
 
-def delete_book_by_id(id: int) -> dict:
+def delete_book(id: int) -> dict:
     query = """DELETE FROM libros WHERE id = :id"""
     param = {"id": id}
     with dbm:
         result = dbm.execute_query(query=query, param=param)
-        if result.rowcount == 0:
+        if not result.rowcount:
             raise HTTPException(status_code=404, detail="Libro no encontrado")
 
     return {"Result": "Libro eliminado exitosamente"}
+
+
+if __name__ == "__main__":
+
+    print(get_book_by_id(1))
